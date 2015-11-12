@@ -1,10 +1,5 @@
 package edu.towson.cis.cosc455.han.project1.interfaces;
-// COSC 455 Programming Languages: Implementation and Design
-// Lab 2 - A Simple Syntax Analyzer
-// Josh Dehlinger
-//
-// This syntax analyzer implements a top-down, left-to-right, recursive-descent parser based
-// on the production rules for the simple lolspeak language described in Labs 1 & 2.
+
 
 import java.util.*;
 
