@@ -84,15 +84,17 @@ public class SyntaxAnalyzer {
 //===========================================================================
 	public void markdown(){
 		resetError();
-		if(Compiler.currentToken.equalsIgnoreCase(DOCB)){
+		
+		 DOCB();
 		 variable_define();
 		 head();
 		 body();
 		 DOCE();
-		}
+		
 	}
 	protected void head(){
 		if(Compiler.currentToken.equalsIgnoreCase(HEAD)){
+			HEAD();
 			title();
 			HEAD();
 
@@ -101,7 +103,8 @@ public class SyntaxAnalyzer {
 	}
 	protected void variable_define(){
 		if(Compiler.currentToken.equalsIgnoreCase(DEFB)){
-			 TEXT();
+			DEFB(); 
+			TEXT();
 			 EQSIGN();
 			 TEXT();
 			 DEFUSEE();
@@ -112,20 +115,34 @@ public class SyntaxAnalyzer {
 	
 	protected void title(){
 		if(Compiler.currentToken.equalsIgnoreCase(TITLEB)){
-			 TEXT();
+			TITLEB(); 
+			TEXT();
 			 TITLEE();
 			}
 		else{}
 	}
 	
 	protected void body(){
-		variable_use();
+		if(Compiler.currentToken.equalsIgnoreCase(USEB)){
+			 inner_text();
+			 body();
+			 }
+		else if(Compiler.currentToken.equalsIgnoreCase(PARAB)){
+			paragraph();
+			 body();
+			}
+		else if(Compiler.currentToken.equalsIgnoreCase(NEWLINE)){
+			newline();
+			 body();
+			}
+		else{}
 		
 		
 	}
 	protected void variable_use(){
 		if(Compiler.currentToken.equalsIgnoreCase(USEB)){
-			 TEXT();
+			USEB(); 
+			TEXT();
 			 DEFUSEE();
 			 
 			}
@@ -134,7 +151,8 @@ public class SyntaxAnalyzer {
 
 	protected void link(){
 		if(Compiler.currentToken.equalsIgnoreCase(LINKB)){
-			 TEXT();
+			LINKB();
+			TEXT();
 			 LINKE();
 			 ADDRESSB();
 			 TEXT();
@@ -144,6 +162,7 @@ public class SyntaxAnalyzer {
 	}
 	protected void audio(){
 		if(Compiler.currentToken.equalsIgnoreCase(AUDIO)){
+			 AUDIO();
 			 ADDRESSB(); 
 			 TEXT();
 			 ADDRESSE();
@@ -152,6 +171,7 @@ public class SyntaxAnalyzer {
 	}
 	protected void video(){
 		if(Compiler.currentToken.equalsIgnoreCase(VIDEO)){
+			VIDEO();
 			ADDRESSB(); 
 			 TEXT();
 			 ADDRESSE();
@@ -160,20 +180,22 @@ public class SyntaxAnalyzer {
 	}
 	protected void newline(){
 		if(Compiler.currentToken.equalsIgnoreCase(TITLEB)){
-
+			TITLEB();
 			}
 		else{}
 	}
 	protected void italics(){
 		if(Compiler.currentToken.equalsIgnoreCase(ITALICS)){
-			 TEXT();
+			ITALICS(); 
+			TEXT();
 			 ITALICS();
 			}
 		else{}
 	}
 	protected void listitem(){
 		if(Compiler.currentToken.equalsIgnoreCase(LISTITEMB)){
-			 inner_item();
+			LISTITEMB(); 
+			inner_item();
 			 LISTITEME();
 			 listitem();
 			}
@@ -181,7 +203,8 @@ public class SyntaxAnalyzer {
 	}
 	protected void bold(){
 		if(Compiler.currentToken.equalsIgnoreCase(BOLD)){
-			 TEXT();
+			BOLD(); 
+			TEXT();
 			 BOLD();
 			}
 		else{}
@@ -196,64 +219,64 @@ public class SyntaxAnalyzer {
 	//===========================================================
 	protected void inner_item(){
 		if(Compiler.currentToken.equalsIgnoreCase(USEB)){
-			 TEXT();
-			 DEFUSEE();
+			 variable_use();;
 			 inner_item();
 			}
 		else if(Compiler.currentToken.equalsIgnoreCase(BOLD)){
-			TEXT();
-			BOLD();
+			bold();
 			inner_item();
 
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(ITALICS)){
-			TEXT();
-			ITALICS();
+			italics();
 			inner_item();
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(LINKB)){
-			ADDRESSB();
-			TEXT();
-			ADDRESSE();
+			link();
 			inner_item();
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(TEXT)){
+			TEXT();
 			inner_item();
 		}
 		else{}
 	}
 	protected void inner_text(){
 		if(Compiler.currentToken.equalsIgnoreCase(USEB)){
-			 TEXT();
-			 DEFUSEE();
+			 variable_use();
 			 inner_text();
 			}
 		else if(Compiler.currentToken.equalsIgnoreCase(BOLD)){
-			TEXT();
-			BOLD();
+			bold();
 			inner_text();
 
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(ITALICS)){
-			TEXT();
-			ITALICS();
+			italics();
 			inner_text();
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(LISTITEMB)){
-			inner_item();
-			LISTITEME();
 			listitem();
+			inner_text();
 		}
-		else if(Compiler.currentToken.equalsIgnoreCase(TEXT)){
+		else if(Compiler.currentToken.equalsIgnoreCase(AUDIO)){
+			audio();
+			inner_text();
+		}
+		else if(Compiler.currentToken.equalsIgnoreCase(VIDEO)){
+			video();
 			inner_text();
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(LINKB)){
-			ADDRESSB();
-			TEXT();
-			ADDRESSE();
+			link();
+			inner_text();
+		}
+		else if(Compiler.currentToken.equalsIgnoreCase(NEWLINE)){
+			newline();
 			inner_text();
 		}
 		else if(Compiler.currentToken.equalsIgnoreCase(TEXT)){
+			TEXT();
 			inner_text();
 		}
 		else{}
@@ -442,7 +465,9 @@ public class SyntaxAnalyzer {
 		else
 			Compiler.Lexer.getNextToken();
 	}
-
+	protected void TEXT(){
+		Compiler.Lexer.getNextToken();
+	}
 
 	void setError(){errorFound = true;}
 	void resetError(){errorFound = false;}

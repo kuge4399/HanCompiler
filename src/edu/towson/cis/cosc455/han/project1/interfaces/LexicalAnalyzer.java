@@ -56,7 +56,7 @@ public class LexicalAnalyzer {
 			lexeme[lexLength] = 0;
 		}
 		else{
-			System.out.println("LEXICAL ERROR - The found lexeme is too long!");
+			System.out.println("LEXICAL ERROR");
 									
 			if(!isSpace(nextChar)){
 				while(!isSpace(nextChar)){					
@@ -69,9 +69,6 @@ public class LexicalAnalyzer {
 			
 		}
 	}
-	private boolean lookupToken(){
-		
-		
-	}
+
 	
 }

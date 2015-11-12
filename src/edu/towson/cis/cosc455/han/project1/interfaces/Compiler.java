@@ -15,7 +15,7 @@ public class Compiler {
 				
 		SyntaxAnalyzer Parser = new SyntaxAnalyzer();
 		
-		FileReader fr = new FileReader(args[0]);
+		FileReader fr = new FileReader("Test1.txt");
 		BufferedReader br = new BufferedReader(fr); 
 		
 		String sourceLine = null; 
