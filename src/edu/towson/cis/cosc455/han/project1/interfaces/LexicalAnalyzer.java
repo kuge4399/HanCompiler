@@ -1,74 +1,56 @@
-package edu.towson.cis.cosc455.han.project1.interfaces;
+package edu.towson.cosc.cosc455.interfaces;
 
-public class LexicalAnalyzer {
+/**
+ * COSC 455 Programming Languages: Implementation and Design.
+ *
+ * A Simple Lexical Analyzer adapted from Sebesta (2010) by Josh Dehlinger,
+ * modified by Adam Conover (2012) and interfaced by Josh Dehlinger (2013)
+ *
+ * Note that these are not the only methods necessary to implement the  
+ * lexical analyzer. You will likely need to add new methods to your implementaion
+ * of this interface. 
+ * 
+ */
+ public interface LexicalAnalyzer {
 
-	private String sourceLine;
-	private char[] lexeme = new char [100];
-	private char nextChar;
-	private int lexLength;
-	private int position;
-		
+    /** The next character. */
+    String nextCharacter = "";
 
-	public void start(String line){
-		sourceLine = line;
-		position = 0;
-		
-		getChar();		
-		getNextToken();		
-	}
-	
+    /** The current position. */
+    int currentPosition = 0;
 
-	public void getNextToken() {
-		lexLength = 0;
-		
-		getNonBlank();
-		addChar();
-		getChar();
-		
+	/**
+	 * This is the public method to be called when the Syntax Analyzer needs a new
+	 * token to be parsed.
+	 */
+	public void getNextToken();
 
-		while((nextChar != '\n') && (nextChar != ' ')){
-			addChar();
-			getChar();
-		}			
-		
-		String newToken = new String(lexeme);
-		Compiler.currentToken = newToken.substring(0, lexLength);		
-	}
-	
-	private void getChar(){
-		if (position < sourceLine.length())
-			nextChar = sourceLine.charAt(position++);
-		else nextChar = '\n';
-	}
-	
-	private boolean isSpace(char c){
-		if (c == ' ') return true;
-		else return false;
-	}
-	
-	private void getNonBlank(){
-		while(isSpace(nextChar))getChar();
-	}
+	/**
+	 * This is method gets the next character from the input and places it in
+	 * the nextCharacter class variable.
+	 *
+	 * @return the character
+	 */
+	void getChar();
 
-	private void addChar(){
-		if(lexLength <= 98){
-			lexeme[lexLength++] = nextChar;
-			lexeme[lexLength] = 0;
-		}
-		else{
-			System.out.println("LEXICAL ERROR");
-									
-			if(!isSpace(nextChar)){
-				while(!isSpace(nextChar)){					
-					getChar();						
-				}
-			}
-			lexLength = 0;					
-			getNonBlank();
-			addChar();
-			
-		}
-	}
+	 /**
+     * This method adds the current character the nextToken.
+     */
+	void addChar();
 
-	
+	/**
+	 * This is method gets the next character from the input and places it in
+	 * the nextCharacter class variable.
+	 *
+	 * @param c the current character
+	 * @return true, if is space; otherwise false
+	 */
+	boolean isSpace(String c);
+
+	/**
+	 * This method checks to see if the current, possible token is legal in the
+	 * defined grammar.
+	 *
+	 * @return true, if it is a legal token, otherwise false
+	 */
 }

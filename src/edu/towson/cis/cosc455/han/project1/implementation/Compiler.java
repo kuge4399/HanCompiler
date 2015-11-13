@@ -1,4 +1,4 @@
-package edu.towson.cis.cosc455.han.project1.interfaces;
+package edu.towson.cis.cosc455.han.project1.implementation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,15 +7,23 @@ import java.io.IOException;
 public class Compiler {
 	
 	public static String currentToken;
-	public static LexicalAnalyzer Lexer;
+	public static MyLexicalAnalyzer Lexer;
 	
 
 	public static void main(String[] args) throws IOException {
-		Lexer = new LexicalAnalyzer();
-				
-		SyntaxAnalyzer Parser = new SyntaxAnalyzer();
+		String fname="Test2.mkd";
 		
-		FileReader fr = new FileReader("Test1.txt");
+		if(fname.endsWith("mkd")){
+		}
+		else{
+			System.out.println("Usage error");
+			fname="aa";
+		}
+		Lexer = new MyLexicalAnalyzer();
+				
+		MySyntaxAnalyzer Parser = new MySyntaxAnalyzer();
+		
+		FileReader fr = new FileReader(fname);
 		BufferedReader br = new BufferedReader(fr); 
 		
 		String sourceLine = null; 
@@ -26,10 +34,8 @@ public class Compiler {
 
 			Parser.markdown();
 			
-			if(!Parser.getError())
-				System.out.println("The sentence '" + sourceLine + "' follows the BNF grammar.");
-			else
-				System.out.println("The sentence '" + sourceLine + "' does not follow the BNF grammar.");
+
+			System.out.println(sourceLine);
 			
 			System.out.println();
 		} 
